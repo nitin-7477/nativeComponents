@@ -1,17 +1,20 @@
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import TextField from '../components/TextField'
 import Button from '../components/Button'
 import Spacer from '../components/Spacer'
+import { useNavigation } from '@react-navigation/native'
+
 // import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 const LoginScreen = () => {
+    const navigation = useNavigation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     // in case if you want to apply a condition to sign in with google
-    
+
     // const signInWithGoogle = async () => {
     //     try {
     //         await GoogleSignin.configure({
@@ -40,13 +43,23 @@ const LoginScreen = () => {
 
 
     const handleLogin = () => {
-
-        console.log('Logged In')
-        console.log(email)
-        console.log(password)
-        setEmail('')
-        setPassword('')
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        if (!email.trim()) {
+            Alert.alert('Error', 'Email address cannot be empty');
+        } else if (!emailRegex.test(email)) {
+            Alert.alert('Error', 'Please enter a valid email address');
+        } else if (password.length < 6 || password.length > 12) {
+            Alert.alert('Error', 'Password should be between 6 to 12 characters');
+        } else {
+            Alert.alert('Success', 'Login successful');
+            navigation.navigate('Home');
+        }
+    
+        setEmail('');
+        setPassword('');
     }
+    
     return (
         <View style={styles.container}>
             <Image source={require('../../assets/loginLogo.jpg')} style={styles.logo} />
@@ -62,9 +75,9 @@ const LoginScreen = () => {
                     placeholder={'Enter Email Address'}
                     value={email}
                     onChangeText={(text) => setEmail(text)}
-            
+
                 />
-       
+
 
                 <TextField icon={require('../../assets/lock.png')}
                     width={'90%'}
@@ -123,7 +136,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         marginVertical: 10,
         alignItems: 'center',
-    
+
     },
 
     loginText: {

@@ -16,7 +16,7 @@ const TextField = ({ icon, placeholder, width, height, inputWidth = '90%', backg
             borderRadius: 10,
             marginVertical:5
         }}>
-            <Image source={icon} style={{ height: 30, width: 30, }} />
+            <Image source={icon} style={{ height: 30, width: 30,marginLeft:10 }} />
             <TextInput
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
